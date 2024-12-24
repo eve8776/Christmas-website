@@ -84,7 +84,11 @@
         总之圣诞节快乐！爱你！祝你的所有夜晚都美好🎄✨ ———圣诞老狗🐕❄
       </p>
     </div>
-    <audio id="bgm" src="you.mp3"></audio>
+    <audio id="bgm" controls>
+      <source src="you.mp3" type="audio/mpeg" />
+      <source src="you.ogg" type="audio/ogg" />
+      Your browser does not support the audio element.
+    </audio>
 
     <script>
       const bgm = document.getElementById("bgm");
@@ -92,11 +96,13 @@
 
       musicButton.addEventListener("click", () => {
         if (bgm.paused) {
-          bgm.play(); // 播放音乐
-          musicButton.textContent = "Pause Music ⏸️";
+          bgm.play().catch((error) => {
+            console.log("播放被阻止：", error);
+          });
+          musicButton.textContent = "暂停音乐 ⏸️";
         } else {
-          bgm.pause(); // 暂停音乐
-          musicButton.textContent = "Play Music 🎵";
+          bgm.pause();
+          musicButton.textContent = "播放音乐 🎵";
         }
       });
     </script>
