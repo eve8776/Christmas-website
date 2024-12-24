@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merry Chritsmas！</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #ffefd5;
+        font-family: "Arial", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .login-container {
+        text-align: center;
+        color: #2e8b57;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background-color: #fff;
+        border-radius: 10px;
+        max-width: 400px;
+        width: 90%;
+      }
+      .input-group {
+        margin: 15px 0;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: block;
+        margin: 0 auto;
+        box-sizing: border-box;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='%23000' d='M0 0l5 6 5-6H0z'/%3E%3C/svg%3E"); /* 自定义下拉箭头 */
+        background-repeat: no-repeat;
+        background-position: right 13px center;
+        background-size: 12px 12px;
+      }
+      input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: block;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
+      button {
+        padding: 10px 20px;
+        color: #fff;
+        background-color: #2e8b57;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      button:hover {
+        background-color: #246b42;
+      }
+      .message {
+        margin-top: 20px;
+        font-size: 1rem;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <h1>🐱Hello Cat!🐱</h1>
+      <div class="input-group">
+        <label for="name">选择您的身份:</label>
+        <select id="name">
+          <option value="">—请选择—</option>
+          <option value="cat">残忍冷酷邪恶聪明的猫猫科学家</option>
+          <option value="dog">一只路过的狗狗</option>
+          <option value="angle">钝角</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="birthday">输入您的生日:</label>
+        <input
+          type="date"
+          id="birthday"
+          placeholder="YYYY-MM-DD"
+          min="2000-01-01"
+          max="2024-12-31"
+        />
+      </div>
+      <button onclick="validateEntry()">提交</button>
+      <div class="message" id="message"></div>
+    </div>
+
+    <script>
+      function formatDateInput(input) {
+        input.addEventListener("input", () => {
+          const value = input.value;
+          const parts = value.split("-");
+
+          if (parts.length > 0) {
+            parts[0] = parts[0].slice(0, 4); // 限制年份为4位数字
+          }
+          if (parts.length > 1) {
+            parts[1] = parts[1].slice(0, 2); // 限制月份为2位数字
+          }
+          if (parts.length > 2) {
+            parts[2] = parts[2].slice(0, 2); // 限制日期为2位数字
+          }
+
+          input.value = parts.join("-");
+        });
+
+        input.addEventListener("blur", () => {
+          const value = input.value;
+          const parts = value.split("-");
+          let valid = true;
+
+          if (parts.length >= 1 && (parts[0].length !== 4 || isNaN(parts[0]))) {
+            valid = false; // 检查年份是否为4位数字
+          }
+          if (
+            parts.length >= 2 &&
+            (parts[1].length !== 2 ||
+              isNaN(parts[1]) ||
+              parts[1] < 1 ||
+              parts[1] > 12)
+          ) {
+            valid = false; // 检查月份是否合法
+          }
+          if (
+            parts.length === 3 &&
+            (parts[2].length !== 2 ||
+              isNaN(parts[2]) ||
+              parts[2] < 1 ||
+              parts[2] > 31)
+          ) {
+            valid = false; // 检查日期是否合法
+          }
+
+          if (!valid) {
+            alert("日期格式不正确，请检查输入。");
+            input.value = parts.slice(0, 2).join("-"); // 仅保留有效的部分
+          }
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const birthdayInput = document.getElementById("birthday");
+        formatDateInput(birthdayInput);
+      });
+
+      function validateEntry() {
+        const name = document.getElementById("name").value;
+        const birthday = document.getElementById("birthday").value;
+        const message = document.getElementById("message");
+
+        if (!name && !birthday) {
+          message.textContent = "请选择身份并输入生日！";
+          return;
+        } else if (!name) {
+          message.textContent = "请选择身份！";
+          return;
+        } else if (!birthday) {
+          message.textContent = "请输入生日！";
+          return;
+        }
+
+        if (name === "cat" && birthday === "2004-08-29") {
+          window.location.href = "christmas.html";
+        } else {
+          message.textContent = "抱歉，这不是分配给您的礼物，请滚开❤";
+        }
+      }
+    </script>
+  </body>
+</html>
